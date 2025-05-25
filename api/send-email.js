@@ -27,14 +27,14 @@ module.exports = async (req, res) => {
 
     // 构建新API参数
     const apiPayload = {
-      email: process.env.EMAIL_FA,    // 发信邮箱
-      key: process.env.EMAIL_MM,       // 授权码
-      mail: params.email,             // 收件邮箱
-      title: params.title,            // 邮件标题
-      name: process.env.EMAIL_NAME || '系统通知', // 发信昵称
-      text: params.content,           // 纯文本内容
-      host: params.host || '',        // 可选SMTP服务器
-      port: params.port || ''         // 可选端口
+      email: process.env.EMAIL_FA,  // 保持与新API参数名一致
+      key: process.env.EMAIL_MM,
+      mail: params.email,
+      title: params.title,
+      name: process.env.EMAIL_NAME || '默认昵称',
+      text: params.content,
+      host: params.host || '',
+      port: params.port || ''
     };
 
     // 调用新邮件API
