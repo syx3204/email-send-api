@@ -1,7 +1,7 @@
 const querystring = require('querystring');
 
 module.exports = async (req, res) => {
-  // 处理 CORS
+  // CORS配置
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
   
@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
   }
 
   try {
-    // 解析参数
+    // 参数解析
     const params = req.method === 'POST' 
       ? querystring.parse(req.body)
       : req.query;
@@ -21,45 +21,35 @@ module.exports = async (req, res) => {
     const missing = required.filter(field => !params[field]);
     if (missing.length > 0) {
       return res.status(400).json({ 
-        error: `缺少参数: ${missing.join(', ')}` 
+        error: `缺少必要参数: ${missing.join(', ')}` 
       });
     }
 
-    // 构建 API 请求
+    // 构建新API参数
     const apiPayload = {
-      email_fa: process.env.EMAIL_FA,
-      email_mm: process.env.EMAIL_MM,
-      email_shou: params.email,
-      email_bt: params.title,
-      email_nr: encodeURIComponent(params.content),
-      email_file_url: params.email_file_url || '',
-      email_file_name: params.email_file_name || ''
+      email: process.env.EMAIL_FA,    // 发信邮箱
+      key: process.env.EMAIL_MM,       // 授权码
+      mail: params.email,             // 收件邮箱
+      title: params.title,            // 邮件标题
+      name: process.env.EMAIL_NAME || '系统通知', // 发信昵称
+      text: params.content,           // 纯文本内容
+      host: params.host || '',        // 可选SMTP服务器
+      port: params.port || ''         // 可选端口
     };
 
-    // 处理附件文件名
-    if (params.email_file_name && params.email_file_url) {
-      apiPayload.email_file_url = 
-        `${params.email_file_url}$$${params.email_file_name}`;
-    }
+    // 调用新邮件API
+    const apiUrl = 'http://api.mmp.cc/api/mail?' + new URLSearchParams(apiPayload);
+    const apiResponse = await fetch(apiUrl);
 
-    // 调用邮件 API
-    const apiResponse = await fetch('https://api.dragonlongzhu.cn/api/email.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: new URLSearchParams(apiPayload)
-    });
-
-    // 转发响应
-    const result = await apiResponse.text();
-    res.status(apiResponse.status).send(result);
+    // 处理响应
+    const result = await apiResponse.json();
+    res.status(apiResponse.ok ? 200 : 500).json(result);
     
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ 
-      error: '服务器内部错误',
-      details: error.message 
+      status: "error",
+      message: `服务器内部错误: ${error.message}`
     });
   }
 };
