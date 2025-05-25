@@ -1,0 +1,13 @@
+{
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1",
+      "methods": ["GET", "POST", "OPTIONS"]
+    }
+  ],
+  "env": {
+    "EMAIL_FA": "@email-fa",
+    "EMAIL_MM": "@email-mm"
+  }
+}
