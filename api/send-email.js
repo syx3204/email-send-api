@@ -32,9 +32,7 @@ module.exports = async (req, res) => {
       mail: params.email,
       title: params.title,
       name: process.env.EMAIL_NAME || '默认昵称',
-      text: params.content,
-      host: params.host || '',
-      port: params.port || ''
+      text: params.content
     };
 
     // 调用新邮件API
