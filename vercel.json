@@ -7,7 +7,7 @@
     }
   ],
   "env": {
-    "EMAIL_FA": "@email-fa",
-    "EMAIL_MM": "@email-mm"
+    "EMAIL_FA": "EMAIL_FA",
+    "EMAIL_MM": "EMAIL_MM"
   }
 }
