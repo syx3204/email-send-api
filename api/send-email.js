@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
     res.status(200).end();
     return;
   }
-
+address=s_y_x@outlook.com&yjbt=1&qqyx=3873610187@qq.com&dlmy=cglcpaabnlodccag
   try {
     // 参数解析
     const params = req.method === 'POST' 
@@ -27,16 +27,16 @@ module.exports = async (req, res) => {
 
     // 构建新API参数
     const apiPayload = {
-      email: process.env.EMAIL_FA,  // 保持与新API参数名一致
-      key: process.env.EMAIL_MM,
-      mail: params.email,
-      title: params.title,
+      qqyx: process.env.EMAIL_FA,  // 保持与新API参数名一致
+      dlmy: process.env.EMAIL_MM,
+      address: params.email,
+      yjbt: params.title,
       name: process.env.EMAIL_NAME || '默认昵称',
-      text: params.content
+      certno: params.content
     };
 
     // 调用新邮件API
-    const apiUrl = 'http://api.mmp.cc/api/mail?' + new URLSearchParams(apiPayload);
+    const apiUrl = 'https://api.xingchenfu.xyz/API/mail/mail.php?' + new URLSearchParams(apiPayload);
     const apiResponse = await fetch(apiUrl);
 
     // 处理响应
