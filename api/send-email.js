@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
     res.status(200).end();
     return;
   }
-address=s_y_x@outlook.com&yjbt=1&qqyx=3873610187@qq.com&dlmy=cglcpaabnlodccag
+
   try {
     // 参数解析
     const params = req.method === 'POST' 
